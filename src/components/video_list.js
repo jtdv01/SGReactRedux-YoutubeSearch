@@ -5,7 +5,10 @@ const VideoList = (props) =>{
   const videoItems = props.videos.map(x => {
     // etag is a unique id from the youtube api
     return(
-      <VideoListItem key={x.etag} video={x} />
+      <VideoListItem
+        onVideoSelect={props.onVideoSelect}
+        key={x.etag} video={x}
+      />
     );
   });
 

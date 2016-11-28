@@ -13,20 +13,32 @@ export default class App extends Component {
 
   constructor(props){
     super(props);
-    this.state = { videos: [] };
-    console.log(ytsearch_api_key);
-    YTSearch({key: ytsearch_api_key, term: 'surfboards'},(videos) =>{
+    this.state = {
+      videos: [],
+      selectedVideo: null
+    };
 
-      this.setState({ videos });
+    this.videoSearch('surfing');
+  }
+
+  videoSearch(term){
+    YTSearch({key: ytsearch_api_key, term: term},(videos) =>{
+      this.setState({
+        videos,
+        selectedVideo: videos[0]
+      });
     });
   }
 
   render() {
     return (
       <div>
-        <SearchBar />
-        <VideoDetail video={this.state.videos[0]}/>
-        <VideoList videos={this.state.videos}/>
+        <SearchBar searchTermFunc={term => this.videoSearch(term)}/>
+        <VideoDetail video={this.state.selectedVideo}/>
+        <VideoList
+          onVideoSelect={selectedVideo => this.setState({selectedVideo})}
+          videos={this.state.videos}
+        />
       </div>
     );
   }
